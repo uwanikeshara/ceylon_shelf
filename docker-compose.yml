@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:6
+    container_name: ceylonshelf_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  backend:
+    build:
+      context: ./BackEnd
+      dockerfile: Dockerfile
+    container_name: ceylonshelf_backend
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - MONGO_URI=mongodb://mongodb:27017/ceylonshelf_db
+      - ACCESS_TOKEN_SECRET=ceylonshelf_jwt_access_secret_2026_key
+      - REFRESH_TOKEN_SECRET=ceylonshelf_jwt_refresh_secret_2026_key
+    depends_on:
+      - mongodb
+
+  frontend:
+    build:
+      context: ./FrontEnd
+      dockerfile: Dockerfile
+    container_name: ceylonshelf_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:
