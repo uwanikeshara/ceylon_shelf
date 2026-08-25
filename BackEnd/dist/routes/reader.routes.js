@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const reader_controller_1 = require("../controllers/reader.controller");
+const authenticateToken_1 = require("../middlewares/authenticateToken");
+const readerRouter = (0, express_1.Router)();
+readerRouter.post("/", authenticateToken_1.authenticateToken, reader_controller_1.createReader);
+readerRouter.get("/", authenticateToken_1.authenticateToken, reader_controller_1.getReaders);
+readerRouter.put("/:id", authenticateToken_1.authenticateToken, reader_controller_1.updateReader);
+readerRouter.delete("/:id", authenticateToken_1.authenticateToken, reader_controller_1.deleteReader);
+readerRouter.get("/count", authenticateToken_1.authenticateToken, reader_controller_1.getReaderCount);
+readerRouter.get("/:id", authenticateToken_1.authenticateToken, reader_controller_1.getReaderById);
+exports.default = readerRouter;
